@@ -53,6 +53,7 @@ def main():
 
     yagpt_folder_id = st.secrets["YC_FOLDER_ID"]
     yagpt_api_key = st.secrets["YC_API_KEY"]
+    yagpt_model_id = os.getenv("YC_MODEL_ID")
 
     # Загрузка переменных из файла .env
     # load_dotenv()
@@ -85,8 +86,9 @@ def main():
             ''')
 
     model_list = [
+      "YandexGPT MTBank",
       "YandexGPT Lite",
-      "YandexGPT Pro"      
+      "YandexGPT Pro"
     ]    
     index_model = 0
     selected_model = st.sidebar.radio("Выберите модель для работы:", model_list, index=index_model, key="index")     
@@ -97,7 +99,7 @@ def main():
         'Выберите какой системный промпт использовать',
         ('По умолчанию', 'Задать самостоятельно')
     )
-    default_prompt = "Ты очень полезный чатбот, тебя зовут YandexGPT. Можешь общаться на разные темы. При ответе на вопросы будь краток, используй 30 слов или меньше."
+    default_prompt = "Твое имя Алекс. Ты отвечаешь от лица мужского рода. Ты робот. Ты говоришь используя 30 слов или меньше. Ты был создан в Минске в Центре аналитических решений в ЗАО МТБанк."
     # Если выбрана опция "Задать самостоятельно", показываем поле для ввода промпта
     if prompt_option == 'Задать самостоятельно':
         custom_prompt = st.sidebar.text_input('Введите пользовательский промпт:')
@@ -131,10 +133,17 @@ def main():
 
     # model_uri = "gpt://"+str(yagpt_folder_id)+"/yandexgpt/latest"
     # model_uri = "gpt://"+str(yagpt_folder_id)+"/yandexgpt-lite/latest"
-    if selected_model==model_list[0]: 
-        model_uri = "gpt://"+str(yagpt_folder_id)+"/yandexgpt-lite/latest"
-    else:
-        model_uri = "gpt://"+str(yagpt_folder_id)+"/yandexgpt/latest"    
+    # if selected_model==model_list[0]:
+    #     model_uri = "gpt://"+str(yagpt_folder_id)+"/yandexgpt-lite/latest"
+    # else:
+    #     model_uri = "gpt://"+str(yagpt_folder_id)+"/yandexgpt/latest"
+    match selected_model:
+        case 1:
+            model_uri = "gpt://" + str(yagpt_folder_id) + "/yandexgpt-lite/latest"
+        case 2:
+            model_uri = "gpt://" + str(yagpt_folder_id) + "/yandexgpt/latest"
+        case _:
+            model_uri = "ds://" + str(yagpt_model_id)
     model = ChatYandexGPT(api_key=yagpt_api_key, model_uri=model_uri, temperature = yagpt_temperature, max_tokens = yagpt_max_tokens)
     # model = YandexLLM(api_key = yagpt_api_key, folder_id = yagpt_folder_id, temperature = 0.6, max_tokens=8000, use_lite = False)
 
