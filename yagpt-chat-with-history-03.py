@@ -88,7 +88,7 @@ def main():
 
     model_list = [
       "YandexGPT Lite",
-      "YandexGPT Pro"      
+      "YandexGPT MTBank"
     ]    
     index_model = 0
     selected_model = st.sidebar.radio("Выберите модель для работы:", model_list, index=index_model, key="index")     
@@ -136,7 +136,7 @@ def main():
     if selected_model==model_list[0]: 
         model_uri = "gpt://"+str(yagpt_folder_id)+"/yandexgpt-lite/latest"
     else:
-        model_uri = "gpt://"+str(yagpt_folder_id)+"/yandexgpt/latest"    
+        model_uri = "ds://bt1jfrumohvtn0nqgdvu"
     model = ChatYandexGPT(api_key=yagpt_api_key, model_uri=model_uri, temperature = yagpt_temperature, max_tokens = yagpt_max_tokens)
     # model = YandexLLM(api_key = yagpt_api_key, folder_id = yagpt_folder_id, temperature = 0.6, max_tokens=8000, use_lite = False)
 

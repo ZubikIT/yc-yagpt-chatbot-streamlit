@@ -59,8 +59,6 @@ def main():
     load_dotenv()
     yagpt_folder_id = os.getenv("YC_FOLDER_ID")
     yagpt_api_key = os.getenv("YC_API_KEY")
-    print(yagpt_folder_id)
-    print(yagpt_api_key)
 
     # # Получение folder id
     # if "yagpt_folder_id" in st.secrets:
